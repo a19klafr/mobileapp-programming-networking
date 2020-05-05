@@ -10,6 +10,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,31 +33,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text_view);
+        new JsonTask().execute("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
     }
     @SuppressLint("StaticFieldLeak")
     private class JsonTask extends AsyncTask<String, String, String> {
 
         private HttpURLConnection connection = null;
         private BufferedReader reader = null;
+        private ArrayList<String> mtnNames=new ArrayList<String>();
+        private ArrayList<String> mtnLocs=new ArrayList<String>();
+        private ArrayList<int> mtnHeights=new ArrayList<int>();
 
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage("Downloading JSON");
-            progressDialog.setCancelable(true);
-            progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    cancel(true);
-                }
-            });
-            progressDialog.show();
-        }
 
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
+                URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
@@ -85,12 +80,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
+        protected void onPostExecute(String json) {
+            Log.d("TAG", json);
+
+            try {
+                JSONArray jsonArray = new JSONArray(json);
+                for(int i = 0; i < jsonArray.length(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String name = jsonObject.getString("name");
+                    String location = jsonObject.getString("location");
+                    int height = jsonObject.getInt("size");
+
+                    mtnNames.add(name);
+                    mtnLocs.add(location);
+                    mtnHeights.get(height);
+                }
             }
-            textView.setText(result);
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
