@@ -110,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
                 mtnList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                        Snackbar.make(view, mtnNames.get(i) + " is located in " + mtnLocs.get(i) +
-                                " and is " + mtnHeights.get(i) + "meters high. WOW!", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Action", null).show();
+                        Toast.makeText(getApplicationContext(),mtnNames.get(i) + " is located in "
+                                + mtnLocs.get(i) + " and is " + mtnHeights.get(i) +
+                                " meters high. WOW!", Toast.LENGTH_LONG).show();
                     }
                 });
 
