@@ -6,13 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/mnt_list_view"
-        android:layout_width="306dp"
-        android:layout_height="563dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/MntView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:text="Learn about mountains!"
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/MntView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Click on the mountain you want to learn more about"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <ListView
+            android:id="@+id/mnt_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorAccent"
+            android:padding="20dp" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
