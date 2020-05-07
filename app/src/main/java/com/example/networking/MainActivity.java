@@ -8,7 +8,10 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,18 +35,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.text_view);
-        new JsonTask().execute("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
+        new JsonTask().execute
+                ("https://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
     }
     @SuppressLint("StaticFieldLeak")
     private class JsonTask extends AsyncTask<String, String, String> {
 
         private HttpURLConnection connection = null;
         private BufferedReader reader = null;
+
         private ArrayList<String> mtnNames=new ArrayList<String>();
         private ArrayList<String> mtnLocs=new ArrayList<String>();
-        private ArrayList<int> mtnHeights=new ArrayList<int>();
-
+        private ArrayList<Integer> mtnHeights=new ArrayList<Integer>();
 
         protected String doInBackground(String... params) {
             try {
@@ -93,8 +96,13 @@ public class MainActivity extends AppCompatActivity {
 
                     mtnNames.add(name);
                     mtnLocs.add(location);
-                    mtnHeights.get(height);
+                    mtnHeights.add(height);
                 }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                        (MainActivity.this, R.layout.list_item_textview, R.id.list_items, mtnNames);
+                ListView mtnList = (ListView)findViewById(R.id.mnt_list_view);
+                mtnList.setAdapter(adapter);
+
             }
             catch (JSONException e) {
                 e.printStackTrace();
