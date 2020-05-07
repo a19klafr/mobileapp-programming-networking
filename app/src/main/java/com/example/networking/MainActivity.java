@@ -8,10 +8,15 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -102,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
                         (MainActivity.this, R.layout.list_item_textview, R.id.list_items, mtnNames);
                 ListView mtnList = (ListView)findViewById(R.id.mnt_list_view);
                 mtnList.setAdapter(adapter);
+                mtnList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                        Snackbar.make(view, mtnNames.get(i) + " is located in " + mtnLocs.get(i) +
+                                " and is " + mtnHeights.get(i) + "meters high. WOW!", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Action", null).show();
+                    }
+                });
 
             }
             catch (JSONException e) {
